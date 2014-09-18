@@ -1,0 +1,17 @@
+{
+    "name": "saitswebuwm/xlsx2csv",
+    "description": "Simple converter from XLSX to CSV. Gets only the raw data, in cases of corrupted XLSX files.",
+    "require": {
+        "php": ">=5.3.0",
+        "pclzip/pclzip": "dev-master"
+    },
+    "autoload": {
+    	"classmap": [
+    		"src",
+    		"src/XlsxToCsv"
+    	],
+    	"psr-0": {
+    		"XlsxToCsv\\": "src/XlsxToCsv"
+    	}
+    }
+}
