@@ -6,12 +6,12 @@
         "pclzip/pclzip": "dev-master"
     },
     "autoload": {
-    	"classmap": [
-    		"src",
-    		"src/XlsxToCsv"
-    	],
-    	"psr-0": {
-    		"XlsxToCsv\\": "src/XlsxToCsv"
-    	}
+        "classmap": [
+            "src",
+            "src/XlsxToCsv"
+        ],
+        "psr-0": {
+            "XlsxToCsv\\": "src/XlsxToCsv"
+        }
     }
 }

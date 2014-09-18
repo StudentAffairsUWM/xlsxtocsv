@@ -1,6 +1,7 @@
-<?
+<?php 
 namespace XlsxToCsv;
 
+use \PclZip;
 
 class XlsxToCsv
 {
@@ -15,32 +16,31 @@ class XlsxToCsv
     {
         $newCsvFile = str_replace( '.xlsx', '.csv', $this->fileToConvert );
         $newCsvFile = str_replace( ' ', '-', $newCsvFile );
-        $newCsvFile = sprintf( 'csv/%s', $newCsvFile );
+        $newCsvFile = sprintf( '/tmp/csv/%s', $newCsvFile );
 
-        if ( !is_dir( 'bin' ) )
-            mkdir( 'bin', 0770 );
-        if ( !is_dir( 'csv' ) )
-            mkdir( 'csv', 0777 );
+        if ( !is_dir( '/tmp/bin' ) )
+            mkdir( '/tmp/bin', 0770 );
+        if ( !is_dir( '/tmp/csv' ) )
+            mkdir( '/tmp/csv', 0777 );
 
-        $archive = new PclZip( $this->fileToConvert );
-        $list = $archive->extract( PCLZIP_OPT_PATH, 'bin' );
+        $archive = new \PclZip( $this->fileToConvert );
+        $list = $archive->extract( PCLZIP_OPT_PATH, '/tmp/bin' );
 
         $strings = array();
-        $dir = getcwd();
-        $filename = $dir . '\bin\xl\sharedstrings.xml';
+        $filename = '/tmp/bin/xl/sharedstrings.xml';
 
-        $z = new XMLReader;
-        $z->open( $filename );
+        $z = new \XMLReader;
+        @$z->open( $filename );
 
-        $doc = new DOMDocument;
+        $doc = new \DOMDocument;
         $csvFile = fopen( $newCsvFile, "w" );
 
-        while ( $z->read() && $z->name !== 'si' );
+        while ( @$z->read() && $z->name !== 'si' );
         ob_start();
 
         while ( $z->name === 'si' )
         {
-            $node = new SimpleXMLElement( $z->readOuterXML() );
+            $node = new \SimpleXMLElement( $z->readOuterXML() );
             $result = $this->xmlObjToArray( $node );
             $count = count( $result['text'] );
 
@@ -58,11 +58,11 @@ class XlsxToCsv
         $z->close( $filename );
 
         $dir = getcwd();
-        $filename = $dir . '\bin\xl\worksheets\sheet1.xml';
-        $z = new XMLReader();
+        $filename = '/tmp/bin/xl/worksheets/sheet1.xml';
+        $z = new \XMLReader();
         $z->open( $filename );
 
-        $doc = new DOMDocument;
+        $doc = new \DOMDocument;
 
         $rowCount = '0';
         $sheet = array();
@@ -75,7 +75,7 @@ class XlsxToCsv
         {
             $thisRow = array();
 
-            $node = new SimpleXMLElement( $z->readOuterXML() );
+            $node = new \SimpleXMLElement( $z->readOuterXML() );
             $result = $this->xmlObjToArray( $node );
 
             $cells = $result['children']['c'];
@@ -118,7 +118,7 @@ class XlsxToCsv
             }
 
             $rowLength = count( $thisRow );
-            $rowCound++;
+            $rowCount++;
             $emptyRow = array();
 
             while ( $rowCount < $rowNo )
@@ -146,7 +146,9 @@ class XlsxToCsv
         $z->close( $filename );
         ob_end_flush();
 
-        $this->cleanUp('bin/');
+        $this->cleanUp('/tmp/bin/');
+
+        return $newCsvFile;
     }
 
     /**
@@ -214,7 +216,7 @@ class XlsxToCsv
             if ( $enclosure != $escape )
                 $f = str_replace( $escape . $enclosure, $escape, $f );
 
-            if ( strpbrk( $f, " \t\n\r" . $delimter . $enclosure . $escape ) || strchr( $f, "\000" ) )
+            if ( strpbrk( $f, " \t\n\r" . $delimeter . $enclosure . $escape ) || strchr( $f, "\000" ) )
             {
                 fwrite( $handle, $enclosure . $f . $enclosure );
             }
