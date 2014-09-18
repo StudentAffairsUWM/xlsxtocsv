@@ -27,7 +27,7 @@ class XlsxToCsv
         $list = $archive->extract( PCLZIP_OPT_PATH, '/tmp/bin' );
 
         $strings = array();
-        $filename = '/tmp/bin/xl/sharedstrings.xml';
+        $filename = '/tmp/bin/xl/sharedStrings.xml';
 
         $z = new \XMLReader;
         @$z->open( $filename );
@@ -147,6 +147,7 @@ class XlsxToCsv
         ob_end_flush();
 
         $this->cleanUp('/tmp/bin/');
+        fclose($csvFile);
 
         return $newCsvFile;
     }
