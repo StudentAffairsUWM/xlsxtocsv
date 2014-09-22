@@ -15,7 +15,8 @@ class XlsxToCsv
     public function convert()
     {
         $newCsvFile = str_replace( '.xlsx', '.csv', $this->fileToConvert );
-        $newCsvFile = str_replace( ' ', '-', $newCsvFile );
+        $fixFile = explode('/', $newCsvFile);
+        $newCsvFile = str_replace( ' ', '-', end($fixFile));
         $newCsvFile = sprintf( '/tmp/csv/%s', $newCsvFile );
 
         if ( !is_dir( '/tmp/bin' ) )
