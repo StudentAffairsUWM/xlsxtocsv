@@ -3,7 +3,7 @@
     "description": "Simple converter from XLSX to CSV. Gets only the raw data, in cases of corrupted XLSX files.",
     "require": {
         "php": ">=5.3.0",
-        "pclzip/pclzip": "dev-master"
+        "pclzip/pclzip": "~2.8.2"
     },
     "autoload": {
         "classmap": [
