@@ -1,18 +1,18 @@
-<?php 
+<?php
 namespace XlsxToCsv;
 
 use \PclZip;
 
 class XlsxToCsv
 {
-    private $fileToConvert = null; 
+    private $fileToConvert = null;
 
     function __construct( $file )
     {
         $this->fileToConvert = $file;
     }
 
-    public function convert()
+    public function convert($sheetNomber = 1)
     {
         $newCsvFile = str_replace( '.xlsx', '.csv', $this->fileToConvert );
         $fixFile = explode('/', $newCsvFile);
@@ -59,7 +59,7 @@ class XlsxToCsv
         $z->close( $filename );
 
         $dir = getcwd();
-        $filename = '/tmp/bin/xl/worksheets/sheet1.xml';
+        $filename = '/tmp/bin/xl/worksheets/sheet' . $sheetNomber . '.xml';
         $z = new \XMLReader();
         $z->open( $filename );
 
@@ -222,7 +222,7 @@ class XlsxToCsv
             {
                 fwrite( $handle, $enclosure . $f . $enclosure );
             }
-            else 
+            else
             {
                 fwrite( $handle, $f );
             }
