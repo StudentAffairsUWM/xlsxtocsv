@@ -6,14 +6,13 @@ use \PclZip;
 class XlsxToCsv
 {
     private $fileToConvert = null;
-    public $sheetNomber    = 1;
 
     function __construct( $file )
     {
         $this->fileToConvert = $file;
     }
 
-    public function convert()
+    public function convert($sheetNomber = 1)
     {
         $newCsvFile = str_replace( '.xlsx', '.csv', $this->fileToConvert );
         $fixFile = explode('/', $newCsvFile);
@@ -60,7 +59,7 @@ class XlsxToCsv
         $z->close( $filename );
 
         $dir = getcwd();
-        $filename = '/tmp/bin/xl/worksheets/sheet' . $this->sheetNomber . '.xml';
+        $filename = '/tmp/bin/xl/worksheets/sheet' . $sheetNomber . '.xml';
         $z = new \XMLReader();
         $z->open( $filename );
 

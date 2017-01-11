@@ -7,6 +7,5 @@ An XLSX to CSV parser
 
 ```php
 $converter = new \XlsxToCsv\XlsxToCsv($filename);
-$converter->sheetNomber = 1;
-$tmpPath = $converter->convert();
+$tmpPath = $converter->convert($sheetNomber = 1);
 ```
